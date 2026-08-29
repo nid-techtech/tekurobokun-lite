@@ -4,7 +4,6 @@ import { BarcodeKeyboardSource } from "./input/InputSource";
 import { InputRouter } from "./input/InputRouter";
 import { DriveStateMachine } from "./drive/DriveStateMachine";
 import { FacialEngine } from "./facial/FacialEngine";
-import { FacialMockupPanel } from "./facial/FacialMockupPanel";
 import { AudioSlotRegistry } from "./audio/AudioSlotRegistry";
 import { AudioPlayer } from "./audio/AudioPlayer";
 import { DebugHUD, type DebugSnapshot } from "./facial/DebugHUD";
@@ -18,12 +17,7 @@ const driveStateMachine = new DriveStateMachine(config.drive);
 
 const facialContainer = document.querySelector<HTMLDivElement>("#facial-container");
 if (facialContainer) {
-  const facialEngine = new FacialEngine(facialContainer, config.facial);
-
-  // B3: 座標調整用モックアップUIは開発時のみ表示する。
-  if (import.meta.env.DEV) {
-    new FacialMockupPanel(document.body, config.facial, (updated) => facialEngine.update(updated));
-  }
+  new FacialEngine(facialContainer, config.facial);
 }
 
 driveStateMachine.onStateChange((state, command) => {

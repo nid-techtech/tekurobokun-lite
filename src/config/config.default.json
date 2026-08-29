@@ -23,10 +23,19 @@
   },
   "audio": {
     "slots": {
-      "1": { "filePath": "assets/audio/slot1.mp3", "caption": "スロット1のキャプション(仮)" }
+      "1": { "filePath": "/audio/01_hello.wav", "caption": "(仮)あいさつ" },
+      "2": { "filePath": "/audio/02_introduce.wav", "caption": "(仮)じこしょうかい" },
+      "3": { "filePath": "/audio/03_emacs.wav", "caption": "(仮)emacs" },
+      "4": { "filePath": "/audio/04_errormessage.wav", "caption": "(仮)エラーメッセージ" },
+      "5": { "filePath": "/audio/05_warning.wav", "caption": "(仮)けいこく" },
+      "6": { "filePath": "/audio/06_diet.wav", "caption": "(仮)ダイエット" },
+      "7": { "filePath": "/audio/07_toohot.wav", "caption": "(仮)あつい" },
+      "8": { "filePath": "/audio/08_shutup.wav", "caption": "(仮)だまれ" },
+      "9": { "filePath": "/audio/09_yes.wav", "caption": "(仮)はい" },
+      "0": { "filePath": "/audio/10_no.wav", "caption": "(仮)いいえ" }
     },
-    "errorSound": { "filePath": "assets/audio/error.mp3", "caption": "" },
-    "startupGreeting": { "filePath": "assets/audio/startup.mp3", "caption": "" }
+    "errorSound": { "filePath": "/audio/error.wav", "caption": "(仮)異常操作" },
+    "startupGreeting": { "filePath": "/audio/hello_world.wav", "caption": "(仮)起動あいさつ" }
   }
 }
 

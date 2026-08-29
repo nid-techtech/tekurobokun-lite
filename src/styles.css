@@ -11,3 +11,48 @@ body {
 #facial-container canvas {
   display: block;
 }
+
+/* B3: 開発時のみ表示する座標調整モックアップUI */
+#facial-mockup-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font: 13px monospace;
+}
+
+#facial-mockup-panel h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+#facial-mockup-panel .facial-mockup-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+#facial-mockup-panel .facial-mockup-row span:first-child {
+  flex: 1;
+}
+
+#facial-mockup-panel .facial-mockup-value {
+  width: 3em;
+  text-align: right;
+}
+
+#facial-mockup-panel textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+  background: #111;
+  color: #0f0;
+  font: 12px monospace;
+}

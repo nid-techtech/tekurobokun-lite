@@ -4,6 +4,7 @@ import { BarcodeKeyboardSource } from "./input/InputSource";
 import { InputRouter } from "./input/InputRouter";
 import { DriveStateMachine } from "./drive/DriveStateMachine";
 import { FacialEngine } from "./facial/FacialEngine";
+import { FacialMockupPanel } from "./facial/FacialMockupPanel";
 
 // AppOrchestrator配線はB系タスクで本格化する。A10実機結合テスト用にSerialLinkへの接続先を暫定的にハードコードしている。
 const ARDUINO_PORT_NAME = "COM5";
@@ -14,7 +15,12 @@ const driveStateMachine = new DriveStateMachine(config.drive);
 
 const facialContainer = document.querySelector<HTMLDivElement>("#facial-container");
 if (facialContainer) {
-  new FacialEngine(facialContainer, config.facial);
+  const facialEngine = new FacialEngine(facialContainer, config.facial);
+
+  // B3: 座標調整用モックアップUIは開発時のみ表示する。
+  if (import.meta.env.DEV) {
+    new FacialMockupPanel(document.body, config.facial, (updated) => facialEngine.update(updated));
+  }
 }
 
 const driveStateDisplay = document.querySelector<HTMLDivElement>("#drive-state-display");

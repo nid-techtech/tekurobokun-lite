@@ -6,20 +6,32 @@ export const FACIAL_CANVAS_HEIGHT = 600;
 
 const CENTER_X = FACIAL_CANVAS_WIDTH / 2;
 
-// アニメーションなし。初期化時に1回描画するのみ（imple 4.8準拠）。
+// アニメーションなし。update()は開発時の座標調整モックアップ(B3)専用の再描画口で、
+// 本番導線（AppOrchestrator）からは呼び出されず初期化時の1回描画のみとなる（imple 4.8準拠）。
 export class FacialEngine {
+  private sketch?: p5;
+  private config: FacialConfig;
+
   constructor(container: HTMLElement, facialConfig: FacialConfig) {
-    new p5((s: p5) => {
+    this.config = facialConfig;
+    this.sketch = new p5((s: p5) => {
       s.setup = () => {
         s.createCanvas(FACIAL_CANVAS_WIDTH, FACIAL_CANVAS_HEIGHT);
         s.noLoop();
+      };
+      s.draw = () => {
         s.background(0);
         s.noFill();
         s.stroke(255);
-        drawEyes(s, facialConfig);
-        drawMouth(s, facialConfig);
+        drawEyes(s, this.config);
+        drawMouth(s, this.config);
       };
     }, container);
+  }
+
+  update(facialConfig: FacialConfig): void {
+    this.config = facialConfig;
+    this.sketch?.redraw();
   }
 }
 

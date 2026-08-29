@@ -7,6 +7,7 @@ import { FacialEngine } from "./facial/FacialEngine";
 import { FacialMockupPanel } from "./facial/FacialMockupPanel";
 import { AudioSlotRegistry } from "./audio/AudioSlotRegistry";
 import { AudioPlayer } from "./audio/AudioPlayer";
+import { DebugHUD, type DebugSnapshot } from "./facial/DebugHUD";
 
 // AppOrchestrator配線はB系タスクで本格化する。A10実機結合テスト用にSerialLinkへの接続先を暫定的にハードコードしている。
 const ARDUINO_PORT_NAME = "COM5";
@@ -25,19 +26,8 @@ if (facialContainer) {
   }
 }
 
-const driveStateDisplay = document.querySelector<HTMLDivElement>("#drive-state-display");
-
-function renderDriveState(): void {
-  if (!driveStateDisplay) return;
-  const state = driveStateMachine.getCurrentState();
-  const { l, r } = driveStateMachine.getMotorCommand();
-  driveStateDisplay.textContent = `state: ${state}  (L=${l}, R=${r})`;
-}
-
-renderDriveState();
 driveStateMachine.onStateChange((state, command) => {
   console.log("[drive] state ->", state, command);
-  renderDriveState();
   invoke("serial_set_command", { l: command.l, r: command.r }).catch((e) =>
     console.error("[serial] send failed:", e),
   );
@@ -45,13 +35,55 @@ driveStateMachine.onStateChange((state, command) => {
 
 const audioSlotRegistry = new AudioSlotRegistry(config.audio.slots);
 const audioPlayer = new AudioPlayer(config.audio.errorSound);
-audioPlayer.onPlaybackStart((caption) => console.log("[audio] start:", caption));
-audioPlayer.onPlaybackEnd(() => console.log("[audio] end"));
+
+let currentCaption: string | null = null;
+audioPlayer.onPlaybackStart((caption) => {
+  currentCaption = caption;
+});
 audioPlayer.play(config.audio.startupGreeting);
 
 router.onDrive((key) => driveStateMachine.handleKey(key));
 router.onAudio((key) => audioPlayer.play(audioSlotRegistry.resolve(key)));
-router.onDebugToggle(() => console.log("[debug] toggle"));
+
+// B7: `/`キーでON/OFFをトグルする。全可変パラメータ+発話キャプションをオーバーレイ表示。
+const debugHUD = new DebugHUD(document.body);
+let debugHUDEnabled = false;
+router.onDebugToggle(() => {
+  debugHUDEnabled = !debugHUDEnabled;
+  debugHUD.setEnabled(debugHUDEnabled);
+});
+
+function buildDebugSnapshot(): DebugSnapshot {
+  const { l, r } = driveStateMachine.getMotorCommand();
+  return {
+    params: {
+      driveState: driveStateMachine.getCurrentState(),
+      motorL: l,
+      motorR: r,
+      forwardSpeed: config.drive.forwardSpeed,
+      turnSpeed: config.drive.turnSpeed,
+      arduinoTimeoutMs: config.drive.arduinoTimeoutMs,
+      keepAliveIntervalMs: config.drive.keepAliveIntervalMs,
+      "eyes.offsetX": config.facial.eyes.offsetX,
+      "eyes.y": config.facial.eyes.y,
+      "eyes.outerRadius": config.facial.eyes.outerRadius,
+      "eyes.innerRadius": config.facial.eyes.innerRadius,
+      "eyes.strokeWeight": config.facial.eyes.strokeWeight,
+      "mouth.y": config.facial.mouth.y,
+      "mouth.width": config.facial.mouth.width,
+      "mouth.height": config.facial.mouth.height,
+      "mouth.segments": config.facial.mouth.segments,
+      "mouth.strokeWeight": config.facial.mouth.strokeWeight,
+    },
+    currentCaption,
+  };
+}
+
+function tickDebugHUD(): void {
+  debugHUD.update(buildDebugSnapshot());
+  requestAnimationFrame(tickDebugHUD);
+}
+requestAnimationFrame(tickDebugHUD);
 
 invoke("serial_connect", { portName: ARDUINO_PORT_NAME })
   .then((connectedPort) => console.log("[serial] connected:", connectedPort))

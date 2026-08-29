@@ -3,6 +3,7 @@ import { config } from "./config/config";
 import { BarcodeKeyboardSource } from "./input/InputSource";
 import { InputRouter } from "./input/InputRouter";
 import { DriveStateMachine } from "./drive/DriveStateMachine";
+import { FacialEngine } from "./facial/FacialEngine";
 
 // AppOrchestrator配線はB系タスクで本格化する。A10実機結合テスト用にSerialLinkへの接続先を暫定的にハードコードしている。
 const ARDUINO_PORT_NAME = "COM5";
@@ -10,6 +11,11 @@ const ARDUINO_PORT_NAME = "COM5";
 const inputSource = new BarcodeKeyboardSource();
 const router = new InputRouter(inputSource);
 const driveStateMachine = new DriveStateMachine(config.drive);
+
+const facialContainer = document.querySelector<HTMLDivElement>("#facial-container");
+if (facialContainer) {
+  new FacialEngine(facialContainer);
+}
 
 const driveStateDisplay = document.querySelector<HTMLDivElement>("#drive-state-display");
 

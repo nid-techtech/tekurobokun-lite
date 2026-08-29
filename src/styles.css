@@ -6,3 +6,8 @@ body {
   margin: 0;
   background-color: #000000;
 }
+
+/* 800x600固定。拡大縮小・レターボックスは発生させない（B1完了条件）。 */
+#facial-container canvas {
+  display: block;
+}

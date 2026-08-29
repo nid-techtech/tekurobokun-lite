@@ -20,6 +20,13 @@
       "segments": 5,
       "strokeWeight": 11
     }
+  },
+  "audio": {
+    "slots": {
+      "1": { "filePath": "assets/audio/slot1.mp3", "caption": "スロット1のキャプション(仮)" }
+    },
+    "errorSound": { "filePath": "assets/audio/error.mp3", "caption": "" },
+    "startupGreeting": { "filePath": "assets/audio/startup.mp3", "caption": "" }
   }
 }
 

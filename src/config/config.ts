@@ -28,9 +28,21 @@ export interface FacialConfig {
   mouth: MouthConfig;
 }
 
+export interface AudioSlotInfo {
+  filePath: string;
+  caption: string;
+}
+
+export interface AudioConfig {
+  slots: Record<string, AudioSlotInfo>; // '1'-'9','0'キーに対応。未登録キーはEMPTY扱い
+  errorSound: AudioSlotInfo; // 空スロット再生時専用（番号スロットとは独立）
+  startupGreeting: AudioSlotInfo; // 起動時自動再生（番号スロットとは独立）
+}
+
 export interface AppConfig {
   drive: DriveConfig;
   facial: FacialConfig;
+  audio: AudioConfig;
 }
 
 export const config: AppConfig = configDefault;

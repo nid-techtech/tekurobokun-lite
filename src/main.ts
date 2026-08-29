@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { config } from "./config/config";
 import { BarcodeKeyboardSource } from "./input/InputSource";
 import { InputRouter } from "./input/InputRouter";
@@ -78,6 +79,16 @@ function tickDebugHUD(): void {
   requestAnimationFrame(tickDebugHUD);
 }
 requestAnimationFrame(tickDebugHUD);
+
+// `f`キーでウィンドウのフルスクリーン表示をトグルする。
+const appWindow = getCurrentWindow();
+window.addEventListener("keydown", (event) => {
+  if (event.key !== "f") return;
+  appWindow
+    .isFullscreen()
+    .then((isFullscreen) => appWindow.setFullscreen(!isFullscreen))
+    .catch((e) => console.error("[window] fullscreen toggle failed:", e));
+});
 
 invoke("serial_connect", { portName: ARDUINO_PORT_NAME })
   .then((connectedPort) => console.log("[serial] connected:", connectedPort))

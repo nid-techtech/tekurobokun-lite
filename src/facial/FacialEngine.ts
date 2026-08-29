@@ -20,9 +20,9 @@ export class FacialEngine {
         s.noLoop();
       };
       s.draw = () => {
-        s.background(0);
+        s.background(255);
         s.noFill();
-        s.stroke(255);
+        s.stroke(0);
         drawEyes(s, this.config);
         drawMouth(s, this.config);
       };

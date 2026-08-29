@@ -73,42 +73,38 @@ void setMotors(int lSpeed, int rSpeed) {
   lSpeed = constrain(lSpeed, -100, 100);
   rSpeed = constrain(rSpeed, -100, 100);
 
-  // Track A (Left) - Fixed Polarity (Ain1=HIGH, Ain2=LOW for forward)
+  // Track A (Left)
+  // 実機確認で前進・後退が逆だったため、極性を反転（Ain1=LOW,Ain2=HIGHが前進）
   if (lSpeed == 0) {
     digitalWrite(pinAin1, LOW);
     digitalWrite(pinAin2, LOW);
     analogWrite(pinPWMA, 0);
   } else if (lSpeed > 0) {
-    // Forward polarity for Track A
-    // Was: LOW, HIGH -> Now: HIGH, LOW
-    digitalWrite(pinAin1, HIGH);
-    digitalWrite(pinAin2, LOW);
+    digitalWrite(pinAin1, LOW);
+    digitalWrite(pinAin2, HIGH);
     int pwm = map(lSpeed, 0, 100, 0, 255);
     analogWrite(pinPWMA, pwm);
   } else {
-    // Reverse polarity for Track A
-    // Was: HIGH, LOW -> Now: LOW, HIGH
-    digitalWrite(pinAin1, LOW);
-    digitalWrite(pinAin2, HIGH);
+    digitalWrite(pinAin1, HIGH);
+    digitalWrite(pinAin2, LOW);
     int pwm = map(-lSpeed, 0, 100, 0, 255);
     analogWrite(pinPWMA, pwm);
   }
 
   // Track B (Right)
+  // 実機確認で前進・後退が逆だったため、極性を反転（Bin1=LOW,Bin2=HIGHが前進）
   if (rSpeed == 0) {
     digitalWrite(pinBin1, LOW);
     digitalWrite(pinBin2, LOW);
     analogWrite(pinPWMB, 0);
   } else if (rSpeed > 0) {
-    // Forward polarity for Track B (Bin1=HIGH, Bin2=LOW)
-    digitalWrite(pinBin1, HIGH);
-    digitalWrite(pinBin2, LOW);
+    digitalWrite(pinBin1, LOW);
+    digitalWrite(pinBin2, HIGH);
     int pwm = map(rSpeed, 0, 100, 0, 255);
     analogWrite(pinPWMB, pwm);
   } else {
-    // Reverse polarity for Track B
-    digitalWrite(pinBin1, LOW);
-    digitalWrite(pinBin2, HIGH);
+    digitalWrite(pinBin1, HIGH);
+    digitalWrite(pinBin2, LOW);
     int pwm = map(-rSpeed, 0, 100, 0, 255);
     analogWrite(pinPWMB, pwm);
   }

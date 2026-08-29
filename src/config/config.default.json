@@ -7,18 +7,19 @@
   },
   "facial": {
     "eyes": {
-      "offsetX": 120,
-      "y": 220,
-      "outerRadius": 70,
-      "innerRadius": 30,
-      "strokeWeight": 6
+      "offsetX": 216,
+      "y": 149,
+      "outerRadius": 111,
+      "innerRadius": 82,
+      "strokeWeight": 10
     },
     "mouth": {
-      "y": 400,
-      "width": 280,
-      "height": 60,
+      "y": 430,
+      "width": 694,
+      "height": 143,
       "segments": 5,
-      "strokeWeight": 6
+      "strokeWeight": 11
     }
   }
 }
+

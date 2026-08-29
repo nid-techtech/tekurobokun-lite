@@ -1,0 +1,8 @@
+{
+  "drive": {
+    "forwardSpeed": 150,
+    "turnSpeed": 120,
+    "arduinoTimeoutMs": 200,
+    "keepAliveIntervalMs": 80
+  }
+}

@@ -5,6 +5,8 @@ import { InputRouter } from "./input/InputRouter";
 import { DriveStateMachine } from "./drive/DriveStateMachine";
 import { FacialEngine } from "./facial/FacialEngine";
 import { FacialMockupPanel } from "./facial/FacialMockupPanel";
+import { AudioSlotRegistry } from "./audio/AudioSlotRegistry";
+import { AudioPlayer } from "./audio/AudioPlayer";
 
 // AppOrchestrator配線はB系タスクで本格化する。A10実機結合テスト用にSerialLinkへの接続先を暫定的にハードコードしている。
 const ARDUINO_PORT_NAME = "COM5";
@@ -41,8 +43,14 @@ driveStateMachine.onStateChange((state, command) => {
   );
 });
 
+const audioSlotRegistry = new AudioSlotRegistry(config.audio.slots);
+const audioPlayer = new AudioPlayer(config.audio.errorSound);
+audioPlayer.onPlaybackStart((caption) => console.log("[audio] start:", caption));
+audioPlayer.onPlaybackEnd(() => console.log("[audio] end"));
+audioPlayer.play(config.audio.startupGreeting);
+
 router.onDrive((key) => driveStateMachine.handleKey(key));
-router.onAudio((key) => console.log("[audio]", key));
+router.onAudio((key) => audioPlayer.play(audioSlotRegistry.resolve(key)));
 router.onDebugToggle(() => console.log("[debug] toggle"));
 
 invoke("serial_connect", { portName: ARDUINO_PORT_NAME })

@@ -14,7 +14,7 @@ const driveStateMachine = new DriveStateMachine(config.drive);
 
 const facialContainer = document.querySelector<HTMLDivElement>("#facial-container");
 if (facialContainer) {
-  new FacialEngine(facialContainer);
+  new FacialEngine(facialContainer, config.facial);
 }
 
 const driveStateDisplay = document.querySelector<HTMLDivElement>("#drive-state-display");

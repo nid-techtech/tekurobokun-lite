@@ -4,5 +4,21 @@
     "turnSpeed": 30,
     "arduinoTimeoutMs": 200,
     "keepAliveIntervalMs": 80
+  },
+  "facial": {
+    "eyes": {
+      "offsetX": 120,
+      "y": 220,
+      "outerRadius": 70,
+      "innerRadius": 30,
+      "strokeWeight": 6
+    },
+    "mouth": {
+      "y": 400,
+      "width": 280,
+      "height": 60,
+      "segments": 5,
+      "strokeWeight": 6
+    }
   }
 }
